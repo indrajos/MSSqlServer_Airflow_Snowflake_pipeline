@@ -62,7 +62,7 @@ with DAG(dag_id='film_actor_check_load',
     quality_checks_task = PythonOperator(
         task_id='quality_checks',
         python_callable=quality_checks,
-        op_kwargs={'table_name': 'film_actor', 'mssql_conn_id': 'mssql1'},
+        op_kwargs={'table_name': 'film_actor', 'mssql_conn_id': 'mssql2'},
         dag=dag,
     )
 
@@ -71,8 +71,8 @@ with DAG(dag_id='film_actor_check_load',
         task_id='upload_table',
         sql="SELECT * FROM film_actor",
         destination_table="FILM_ACTOR",
-        source_conn_id="mssql1",
-        destination_conn_id="sf1",
+        source_conn_id="mssql2",
+        destination_conn_id="snowflake2",
         preoperator="TRUNCATE TABLE IF EXISTS film_actor",
         dag=dag
     )
